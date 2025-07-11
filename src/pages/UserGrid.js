@@ -2,7 +2,6 @@ import { Card, Avatar, Typography, Button, Spin } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { GrEdit } from "react-icons/gr";
 
-const { Text } = Typography;
 
 const UserGrid = ({
   userData,

@@ -27,7 +27,6 @@ const LoginPageNoForm = () => {
   };
 
   const handleLogin = async () => {
-    console.log(process.env.API_KEY);
     setEmailError("");
     setPasswordError("");
 
@@ -61,7 +60,6 @@ const LoginPageNoForm = () => {
         localStorage.setItem("token", response?.data?.token);
       }
     } catch (error) {
-      console.log(error?.response?.data?.error);
       messageApi.open({
         type: "error",
         content: error.response.data.error || "Invalid Credentials",

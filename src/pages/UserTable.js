@@ -93,7 +93,6 @@ const UserTable = ({
   const onPageChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
-    console.log(`Page: ${page}, PageSize: ${pageSize}`);
   };
 
   return (
@@ -104,7 +103,6 @@ const UserTable = ({
         columns={columns}
         pagination={false}
         rowKey="id"
-        loading={loading}
         className="mt-0 px-10"
         locale={{
           emptyText:

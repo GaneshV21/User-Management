@@ -19,7 +19,6 @@ const appRoutes = [
     path="/userlist"
     element={
       <PrivateRoute>
-        {" "}
         <NavPage />
       </PrivateRoute>
     }

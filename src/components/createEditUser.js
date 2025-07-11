@@ -21,8 +21,6 @@ function CreateEditUser({
     let isError = false;
     let errorMessage = "";
 
-    console.log(name, value, data);
-
     if (name === "first_name" || name === "last_name") {
       if (!value.trim()) {
         isError = true;
@@ -110,16 +108,15 @@ function CreateEditUser({
         email: data.email.value,
         avatar: data.avatar.value,
       };
-      const response = await axios.put(`${USER.User}/${data.id}`, payload, {
+      await axios.put(`${USER.User}/${data.id}`, payload, {
         headers: { "x-api-key": "reqres-free-v1" },
       });
-      if (response?.data?.token) {
-        messageApi.open({
-          type: "success",
-          content: "User Updated Successfully",
-          duration: 3,
-        });
-      }
+
+      messageApi.open({
+        type: "success",
+        content: "User Updated Successfully",
+        duration: 3,
+      });
     } catch (error) {
       messageApi.open({
         type: "error",
