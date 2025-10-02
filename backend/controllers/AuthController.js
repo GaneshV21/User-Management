@@ -10,10 +10,9 @@ exports.login = async function (req, res, next) {
       res
         .status(200)
         .json({ data: token, message: "User Login Successfully Done" });
-    } else if (
-      email === process.env.email &&
-      password === process.env.password
-    ) {
+    }
+    if (email === process.env.email && password === process.env.password) {
+      let token = await generateToken(email);
       res
         .status(200)
         .json({ data: token, message: "User Login Successfully Done" });
