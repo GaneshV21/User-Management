@@ -47,7 +47,7 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-mongoose.connect(process.env.DB_URL, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
