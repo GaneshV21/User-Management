@@ -10,6 +10,13 @@ exports.login = async function (req, res, next) {
       res
         .status(200)
         .json({ data: token, message: "User Login Successfully Done" });
+    } else if (
+      email === process.env.email &&
+      password === process.env.password
+    ) {
+      res
+        .status(200)
+        .json({ data: token, message: "User Login Successfully Done" });
     } else {
       res.status(401).json({ data: {}, message: "User Not Found" });
     }
