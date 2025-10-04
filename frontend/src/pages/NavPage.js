@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, message } from "antd";
 import { clearAuthToken } from "../redux/authSlice";
@@ -8,19 +8,20 @@ import UserList from "./UserList";
 const NavPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const user = useSelector((state) => JSON.parse(state.auth.user));
   const handleLogout = () => {
     dispatch(clearAuthToken());
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     message.success("Logged out successfully!");
-    navigate("/");
+    navigate("/login");
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className=" flex justify-end items-center w-full h-[55px] bg-[#001628] ">
         <div className="flex justify-between items-center gap-7 px-8">
-          <span className="text-white text-base">Elon Musk</span>{" "}
+          <span className="text-white text-base">{user.name}</span>{" "}
           <Button
             onClick={handleLogout}
             icon={<RiLogoutCircleRLine />}

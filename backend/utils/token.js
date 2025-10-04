@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const Token = require("../models/token.js");
+const sha256 = require("sha256");
 
 async function generateToken(email) {
   const token = crypto.randomBytes(32).toString("hex");
@@ -13,4 +14,7 @@ async function generateToken(email) {
   }
 }
 
-module.exports = { generateToken };
+function hash(str) {
+  return sha256(str + process.env.secret || "demo");
+}
+module.exports = { generateToken, hash };

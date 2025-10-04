@@ -5,30 +5,54 @@ exports.login = async function (req, res, next) {
   try {
     const { email, password } = req.body;
 
-    // Check in database
-    const userData = await Auth.findOne({ email, password });
-
-    if (userData) {
-      const token = await generateToken(email);
-      return res.status(200).json({
-        data: token,
-        message: "User login successful",
+    const userData = await Auth.findOne({ email });
+    if (!userData) {
+      return res.status(401).json({
+        data: {},
+        message: "Invalid email or password",
       });
     }
 
-    // Check for admin credentials from environment variables
-    if (email === process.env.email && password === process.env.password) {
-      const token = await generateToken(email);
-      return res.status(200).json({
-        data: token,
-        message: "Admin login successful",
+    const isPasswordValid = await userData.checkPassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        data: {},
+        message: "Invalid email or password",
       });
     }
 
-    // If neither found
-    return res.status(401).json({
-      data: {},
-      message: "Invalid email or password",
+    const token = await generateToken(email);
+    let reponse = { token, email, name: userData.name };
+
+    return res.status(200).json({
+      data: reponse,
+      message: "User login successful",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signup = async function (req, res, next) {
+  try {
+    const { email, password, name } = req.body;
+    if (!email || !password || !name) {
+      return res.status(400).json({
+        data: {},
+        message: "Missing Mandatory Fields",
+      });
+    }
+    let emailAlreadyExist = await Auth.findOne({ email });
+    if (emailAlreadyExist) {
+      return res.status(400).json({
+        data: {},
+        message: "Email Already Exist",
+      });
+    }
+    await Auth.create({ email, password, name });
+    return res.status(200).json({
+      data: { email },
+      message: "Signup Successfully",
     });
   } catch (err) {
     next(err);

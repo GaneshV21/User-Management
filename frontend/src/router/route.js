@@ -3,6 +3,7 @@ import LoginPageNoForm from "../pages/LoginPage";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import NavPage from "../pages/NavPage";
+import SignupPageForm from "../pages/SignupPage";
 
 const PrivateRoute = ({ children }) => {
   const authToken = useSelector((state) => state.auth.token);
@@ -26,13 +27,14 @@ const PrivateRouteCheckLogin = ({ children }) => {
 const appRoutes = [
   <Route
     key="login"
-    path="/"
+    path="/login"
     element={
       <PrivateRouteCheckLogin>
         <LoginPageNoForm />
       </PrivateRouteCheckLogin>
     }
   />,
+  <Route key="signup" path="/" element={<SignupPageForm />} />,
   <Route
     key="userlist"
     path="/userlist"

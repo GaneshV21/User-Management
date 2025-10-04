@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { Input, Button, Checkbox, message } from "antd";
+import { Input, Button, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { AUTH } from "../utils/api-endpoints";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setAuthToken } from "../redux/authSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { setAuthToken, setUser } from "../redux/authSlice";
 import { validateEmail } from "../utils/regex";
 
 const LoginPageNoForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,9 +50,11 @@ const LoginPageNoForm = () => {
           content: response?.data?.message,
           duration: 3,
         });
-        dispatch(setAuthToken(response?.data?.data));
+        dispatch(setAuthToken(response?.data?.data?.token));
+        dispatch(setUser(JSON.stringify(response?.data?.data)));
         navigate("/userlist");
-        localStorage.setItem("token", response?.data?.data);
+        localStorage.setItem("token", response?.data?.data?.token);
+        localStorage.setItem("user", JSON.stringify(response?.data?.data));
       }
     } catch (error) {
       messageApi.open({
@@ -70,7 +71,10 @@ const LoginPageNoForm = () => {
     <>
       {contextHolder}
       <div className="min-h-screen flex items-center justify-center bg-gray-200">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+        <div className="bg-white px-8 pb-8 rounded-lg shadow-md w-full max-w-sm">
+          <p className="text-center text-2xl font-semibold text-gray-800 mt-6 mb-4">
+            Login Page
+          </p>
           <div className="space-y-4">
             <div>
               <Input
@@ -109,15 +113,6 @@ const LoginPageNoForm = () => {
             </div>
 
             <div className="mb-0">
-              <Checkbox
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              >
-                Remember me
-              </Checkbox>
-            </div>
-
-            <div className="mb-0">
               <Button
                 type="primary"
                 className="w-full h-10 rounded-md bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -128,6 +123,12 @@ const LoginPageNoForm = () => {
                 Log in
               </Button>
             </div>
+            <p className="mt-1 text-sm text-gray-600">
+              Don’t have an account?{" "}
+              <Link to="/" className="text-blue-500 hover:underline">
+                Register here
+              </Link>
+            </p>
           </div>
         </div>
       </div>
