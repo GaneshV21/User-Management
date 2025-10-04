@@ -44,10 +44,9 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("port connected to 8002");
+app.get("/", (req, res) => {
+  res.send("✅ Backend running on Vercel!");
 });
-
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
