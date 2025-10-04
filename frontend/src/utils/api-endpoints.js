@@ -1,4 +1,4 @@
-export const BASE = process.env.REACT_APP_BACKEND_URL;
+export const BASE = process.env.REACT_APP_BACKEND_URL || "localhost:8000";
 
 export const AUTH = {
   Login: `${BASE}/auth/v1/login`,
